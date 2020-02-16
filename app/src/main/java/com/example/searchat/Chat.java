@@ -10,21 +10,21 @@ public class Chat {
     private String image;
     private int viewType;
 
-    public void setTextChat(String content, int viewType){
+    public void setTextChat(String content){
         this.content = content;
-        this.viewType = viewType;
+        this.viewType = ItemType.VIEW_TYPE_CHAT_LEFT;
     }
 
-    public void setTextChat(String name, String content, String profile, int viewType){
+    public void setTextChat(String name, String content, String profile){
         this.name = name;
         this.content = content;
         this.profile = profile;
-        this.viewType = viewType;
+        this.viewType = ItemType.VIEW_TYPE_CHAT_RIGHT;
     }
 
-    public void setImageChat(String image, int viewType){
+    public void setImageChat(String image){
         this.image = image;
-        this.viewType = viewType;
+        this.viewType = ItemType.VIEW_TYPE_CHAT_IMAGE;
     }
 
     public String getName() {

@@ -19,6 +19,8 @@ import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
     private OAuthLogin mOAuthLoginModule;
     private OAuthLoginButton mOAuthLoginButton;
     private OAuthLoginHandler mOAuthLoginHandler;
@@ -29,7 +31,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkPermission();
+    }
+
+    private void naverLogin(){
         mOAuthLoginModule = OAuthLogin.getInstance();
         mOAuthLoginModule.init(
                 LoginActivity.this
@@ -61,35 +71,20 @@ public class LoginActivity extends AppCompatActivity {
         mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Here, thisActivity is the current activity
+    private void checkPermission(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Permission is not granted
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_CONTACTS)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                    Manifest.permission.INTERNET)) {
             } else {
-                // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        1000);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+                        new String[]{Manifest.permission.INTERNET},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             }
         } else {
-            // Permission has already been granted
+            naverLogin();
         }
-
     }
 }

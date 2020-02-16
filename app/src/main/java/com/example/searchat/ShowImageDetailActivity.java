@@ -21,7 +21,18 @@ public class ShowImageDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_image_detail);
+        initView();
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("POSITION", viewPager.getCurrentItem());
+        setResult(Activity.RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    private void initView(){
         Intent intent = getIntent();
 
         data = intent.getStringArrayListExtra("IMAGES");
@@ -36,15 +47,6 @@ public class ShowImageDetailActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager.setCurrentItem(position);
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("POSITION", viewPager.getCurrentItem());
-        setResult(Activity.RESULT_OK, intent);
-        super.onBackPressed();
     }
 
 }

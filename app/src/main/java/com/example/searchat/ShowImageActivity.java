@@ -30,24 +30,7 @@ public class ShowImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
-
-        Intent intent = getIntent();
-
-        data = intent.getStringArrayListExtra("IMAGES");
-
-        //recyclerview setting
-        adapter = new ImageRecyclerAdapter();
-
-        layoutManager = new GridLayoutManager(this, 3);
-
-        recyclerView = findViewById(R.id.showimg_recycler_view);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter.setGridMode(true);
-        adapter.setData(data);
-        adapter.setOnItemClickListener(itemClickListener);
-        adapter.notifyDataSetChanged();
+        initView();
     }
 
     @Override
@@ -68,4 +51,24 @@ public class ShowImageActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE);
         }
     };
+
+    private void initView(){
+        Intent intent = getIntent();
+        data = intent.getStringArrayListExtra("IMAGES");
+
+        //recyclerview setting
+        adapter = new ImageRecyclerAdapter();
+
+        layoutManager = new GridLayoutManager(this, 3);
+
+        recyclerView = findViewById(R.id.showimg_recycler_view);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter.setGridMode(true);
+        adapter.setData(data);
+        adapter.setOnItemClickListener(itemClickListener);
+        adapter.notifyDataSetChanged();
+
+    }
 }
