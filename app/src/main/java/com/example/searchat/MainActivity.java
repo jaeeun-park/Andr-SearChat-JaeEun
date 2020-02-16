@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         , @Header("Authorization") String headers);
 
         @Headers({
-                "X-Naver-Client-Id: ",
-                "X-Naver-Client-Secret: "
+                "X-Naver-Client-Id: F8Q8vkacjL1qgs04C_YI",
+                "X-Naver-Client-Secret: csqxFHKFRq"
         })
         @GET("/v1/search/{type}")
         Call<SearchImage> imageRepos(@Path("type") String type, @Query("query")String query,@Query("display")int display);
@@ -126,9 +126,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-
-
+    // 권한 확인하기
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //listener
