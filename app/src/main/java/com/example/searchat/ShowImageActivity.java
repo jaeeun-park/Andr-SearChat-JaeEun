@@ -1,9 +1,11 @@
 package com.example.searchat;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -18,6 +20,9 @@ public class ShowImageActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager;
     private ImageRecyclerAdapter adapter;
 
+    //intent request code
+    private int REQUEST_CODE = 1000;
+
     //data
     ArrayList<String> data;
 
@@ -29,7 +34,6 @@ public class ShowImageActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         data = intent.getStringArrayListExtra("IMAGES");
-        Log.d("ShowImageActivity", "onCreate: "+data.size());
 
         //recyclerview setting
         adapter = new ImageRecyclerAdapter();
@@ -40,10 +44,18 @@ public class ShowImageActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        adapter.setGridMode(true);
         adapter.setData(data);
         adapter.setOnItemClickListener(itemClickListener);
         adapter.notifyDataSetChanged();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            recyclerView.smoothScrollToPosition(data.getIntExtra("POSITION",0));
+        }
     }
 
     //listener
@@ -53,8 +65,7 @@ public class ShowImageActivity extends AppCompatActivity {
             Intent intent = new Intent(ShowImageActivity.this, ShowImageDetailActivity.class);
             intent.putExtra("IMAGES", data);
             intent.putExtra("FOCUS", position);
-            startActivity(intent);
-            adapter.setGridMode(false);
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
 }

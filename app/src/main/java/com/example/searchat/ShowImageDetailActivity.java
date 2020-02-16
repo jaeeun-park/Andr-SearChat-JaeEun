@@ -1,14 +1,12 @@
 package com.example.searchat;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 
@@ -29,10 +27,8 @@ public class ShowImageDetailActivity extends AppCompatActivity {
         data = intent.getStringArrayListExtra("IMAGES");
         position = intent.getIntExtra("FOCUS", 0);
 
-        Log.d("ShowImageActivityDetail", "onCreate: "+data.size());
-
         adapter = new ImageRecyclerAdapter();
-        adapter.setOnItemClickListener(itemClickListener);
+        adapter.setGridMode(false);
         adapter.setData(data);
         adapter.notifyDataSetChanged();
 
@@ -41,19 +37,14 @@ public class ShowImageDetailActivity extends AppCompatActivity {
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager.setCurrentItem(position);
 
-
     }
 
     @Override
     public void onBackPressed() {
-        adapter.setGridMode(true);
+        Intent intent = new Intent();
+        intent.putExtra("POSITION", viewPager.getCurrentItem());
+        setResult(Activity.RESULT_OK, intent);
         super.onBackPressed();
     }
 
-    ImageRecyclerAdapter.OnItemClickListener itemClickListener = new ImageRecyclerAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClickListener(int position) {
-
-        }
-    };
 }

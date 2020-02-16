@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ShowImageViewHold
     ArrayList<String> data;
 
     //flag
-    private boolean isGridMode = true;
+    private boolean isGridMode;
 
     //Tag - position
     private final int POSITION_TAG = 0xFFFFFFF1;
@@ -35,7 +36,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ShowImageViewHold
     @Override
     public ShowImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = null;
-        if(viewType == ItemType.VIEW_TYPE__SHOW_IMAGE_GRID){
+        if(viewType == ItemType.VIEW_TYPE_SHOW_IMAGE_GRID){
             v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_item_show_image, parent, false);
         } else {
@@ -49,7 +50,11 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ShowImageViewHold
     public void onBindViewHolder(@NonNull ShowImageViewHolder holder, int position) {
         holder.setData(data.get(position));
         holder.image.setTag(POSITION_TAG, position);
-        holder.image.setOnClickListener(clickListener);
+        if(isGridMode){
+            holder.image.setOnClickListener(clickListener);
+        } else{
+            holder.view.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
     }
 
     @Override
@@ -60,7 +65,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ShowImageViewHold
     @Override
     public int getItemViewType(int position) {
         if(isGridMode){
-            return ItemType.VIEW_TYPE__SHOW_IMAGE_GRID;
+            return ItemType.VIEW_TYPE_SHOW_IMAGE_GRID;
         } else{
             return ItemType.VIEW_TYPE_SHOW_IMAGE_DETAIL;
         }
@@ -84,4 +89,5 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ShowImageViewHold
             listener.onItemClickListener((int)v.getTag(POSITION_TAG));
         }
     };
+
 }
