@@ -1,16 +1,15 @@
 package com.example.searchat;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
@@ -31,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        naverLogin();
     }
 
     @Override
@@ -48,7 +48,16 @@ public class LoginActivity extends AppCompatActivity {
                 ,"SearChat"
         );
 
-        mOAuthLoginHandler = new OAuthLoginHandler() {
+        mOAuthLoginHandler = getmOAuthLoginHandler();
+
+
+        mOAuthLoginButton = (OAuthLoginButton) findViewById(R.id.buttonOAuthLoginImg);
+        mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
+    }
+
+    @SuppressLint("HandlerLeak")
+    private OAuthLoginHandler getmOAuthLoginHandler() {
+        return new OAuthLoginHandler() {
             @Override
             public void run(boolean success) {
                 if(success){
@@ -65,10 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-
-
-        mOAuthLoginButton = (OAuthLoginButton) findViewById(R.id.buttonOAuthLoginImg);
-        mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
     }
 
     private void checkPermission(){
@@ -84,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             }
         } else {
-            naverLogin();
         }
     }
 }

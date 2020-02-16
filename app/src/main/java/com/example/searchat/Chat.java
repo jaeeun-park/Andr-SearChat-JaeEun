@@ -1,8 +1,5 @@
 package com.example.searchat;
 
-import android.media.Image;
-import android.net.Uri;
-
 public class Chat {
     private String name;
     private String content;

@@ -7,14 +7,11 @@
     android:background="#7523C103"
     tools:context=".LoginActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/login_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SearChat"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="56sp"
+        android:src="@drawable/logo_searchat"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
