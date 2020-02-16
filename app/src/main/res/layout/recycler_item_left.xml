@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:padding="8dp"
         android:text="Naver"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_image"
@@ -24,7 +23,8 @@
         android:layout_height="wrap_content"
         android:background="#FFB0E0E6"
         android:padding="8dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:textStyle="bold"
         android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@id/item_name"
@@ -33,16 +33,17 @@
         tools:text="검색중이야"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_image"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/naver_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="8dp"
+        android:src="@drawable/naver_icon"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#00FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_name"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

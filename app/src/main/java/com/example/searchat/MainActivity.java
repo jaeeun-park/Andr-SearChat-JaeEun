@@ -1,10 +1,14 @@
 package com.example.searchat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +29,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity {
+
+    //권한
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     //recycler
     private RecyclerView recyclerView;
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Adapter
         adapter = new RecyclerAdapter();
+        adapter.setOnItemBtnClickListener(showImageMoreListener);
 
         //layout manager
         layoutManager = new LinearLayoutManager(this);
@@ -132,6 +140,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.INTERNET)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.INTERNET},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+        } else {
+        }
+
     }
 
     //listener
@@ -160,17 +183,10 @@ public class MainActivity extends AppCompatActivity {
                     if(response.isSuccessful()){
                         searchImages = response.body().item;
                         //이미지 검색 결과 보여주기
-                        if(searchImages.size() > 0){
+                        if(searchImages.size() > 0) {
                             Chat chat = new Chat();
-                            chat.setImageChat(searchImages.get(0).link,ItemType.VIEW_TYPE_CHAT_IMAGE);
-                            dataList.add(chat);
-                            adapter.addData(chat);
-                            adapter.setOnItemBtnClickListener(showImageMoreListener);
-                            adapter.notifyItemInserted(getListLastIndex());
-                            recyclerView.smoothScrollToPosition(getListLastIndex());
-
-                            //검색어를 입력하세요 채팅 추가
-                            addChatItem(askMeChat);
+                            chat.setImageChat(searchImages.get(0).link, ItemType.VIEW_TYPE_CHAT_IMAGE);
+                            addChatItem(chat);
                         }
                     }
                 }
