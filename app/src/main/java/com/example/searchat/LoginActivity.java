@@ -32,10 +32,10 @@ public class LoginActivity extends AppCompatActivity {
 
         mOAuthLoginModule = OAuthLogin.getInstance();
         mOAuthLoginModule.init(
-<<<<<<< HEAD
-
-=======
->>>>>>> 2613715a9efbeca6008e9faa0cf62243cbdbd4cb
+                LoginActivity.this
+                ,"F8Q8vkacjL1qgs04C_YI"
+                ,"csqxFHKFRq"
+                ,"SearChat"
         );
 
         mOAuthLoginHandler = new OAuthLoginHandler() {
