@@ -11,14 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".ShowImageDetailActivity"
+        android:usesCleartextTraffic="true"
+        android:name=".SearChatApplication">
+        <activity android:name=".activity.ShowImageDetailActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
         <activity
-            android:name=".ShowImageActivity"
+            android:name=".activity.ShowImageActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>
 

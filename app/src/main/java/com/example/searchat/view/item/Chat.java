@@ -1,27 +1,29 @@
-package com.example.searchat;
+package com.example.searchat.view.item;
+
+import com.example.searchat.view.item.ItemType;
 
 public class Chat {
     private String name;
     private String content;
     private String profile;
     private String image;
-    private int viewType;
+    private int itemType;
 
     public void setTextChat(String content){
         this.content = content;
-        this.viewType = ItemType.VIEW_TYPE_CHAT_LEFT;
+        this.itemType = ItemType.VIEW_TYPE_CHAT_LEFT;
     }
 
     public void setTextChat(String name, String content, String profile){
         this.name = name;
         this.content = content;
         this.profile = profile;
-        this.viewType = ItemType.VIEW_TYPE_CHAT_RIGHT;
+        this.itemType = ItemType.VIEW_TYPE_CHAT_RIGHT;
     }
 
     public void setImageChat(String image){
         this.image = image;
-        this.viewType = ItemType.VIEW_TYPE_CHAT_IMAGE;
+        this.itemType = ItemType.VIEW_TYPE_CHAT_IMAGE;
     }
 
     public String getName() {
@@ -32,8 +34,8 @@ public class Chat {
         return content;
     }
 
-    public int getViewType() {
-        return viewType;
+    public int getItemType() {
+        return itemType;
     }
 
     public String getProfile() {

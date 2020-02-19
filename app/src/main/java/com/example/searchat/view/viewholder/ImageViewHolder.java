@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.view.viewholder;
 
 import android.util.Log;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.searchat.view.item.Chat;
+import com.example.searchat.R;
 
 public class ImageViewHolder extends AbsViewHolder {
     public ImageViewHolder(@NonNull View itemView) {
@@ -19,6 +22,6 @@ public class ImageViewHolder extends AbsViewHolder {
     @Override
     public void setData(Chat data) {
         Glide.with(this.view.getContext()).load(data.getImage()).into(this.image);
-        Log.d("WhyChatDouble", "setData: ImageViewHolder");
+        Glide.with(this.profile).load(R.drawable.naver_icon).apply(new RequestOptions().circleCrop()).into(this.profile);
     }
 }

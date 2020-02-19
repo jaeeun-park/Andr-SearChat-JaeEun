@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.view.viewholder;
 
 import android.view.View;
 import android.widget.Button;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.searchat.view.item.Chat;
 
 public abstract class AbsViewHolder extends RecyclerView.ViewHolder {
 

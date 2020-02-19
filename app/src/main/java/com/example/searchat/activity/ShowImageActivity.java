@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.searchat.adapter.ImageRecyclerAdapter;
+import com.example.searchat.R;
+import com.example.searchat.api.NaverApiService;
+import com.example.searchat.api.data.SearchImage;
+
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ShowImageActivity extends AppCompatActivity {
 
@@ -23,6 +32,7 @@ public class ShowImageActivity extends AppCompatActivity {
 
     //data
     ArrayList<String> data;
+    ArrayList<SearchImage.Item> searchImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +40,9 @@ public class ShowImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_view);
 
         Intent intent = getIntent();
-        data = intent.getStringArrayListExtra("IMAGES");
+        String query = intent.getStringExtra("query");
+        NaverApiService.searchImage(query, 100, 1, searchImageCallback);
 
-        initView();
     }
 
     @Override
@@ -70,4 +80,28 @@ public class ShowImageActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
     }
+
+    Callback<SearchImage> searchImageCallback = new Callback<SearchImage>() {
+        @Override
+        public void onResponse(Call<SearchImage> call, Response<SearchImage> response) {
+            if(response.isSuccessful()){
+                searchImage = response.body().item;
+                data = new ArrayList<>();
+                if(searchImage != null){
+                    for(SearchImage.Item item : searchImage){
+                        data.add(item.link);
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initView();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onFailure(Call<SearchImage> call, Throwable t) {}
+    };
 }

@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.searchat.R;
+import com.example.searchat.adapter.RecyclerAdapter;
+import com.example.searchat.api.NaverApiService;
+import com.example.searchat.view.item.Chat;
+import com.example.searchat.api.data.SearchImage;
+import com.example.searchat.api.data.User;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,28 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
     //검색 정보
     private ArrayList<SearchImage.Item> searchImages;
+    private String query;
 
     //view
     private ImageView searchBtn;
     private EditText textbox;
-
-    //retrofit service
-    private NaverService service;
-
-    //retrofit
-    public interface NaverService {
-        @GET("/v1/{service}/{type}")
-        Call<User> userRepos(
-                @Path("service") String service, @Path("type") String type
-        , @Header("Authorization") String headers);
-
-        @Headers({
-                "X-Naver-Client-Id: F8Q8vkacjL1qgs04C_YI",
-                "X-Naver-Client-Secret: csqxFHKFRq"
-        })
-        @GET("/v1/search/{type}")
-        Call<SearchImage> imageRepos(@Path("type") String type, @Query("query")String query,@Query("display")int display);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +55,8 @@ public class MainActivity extends AppCompatActivity {
         //startChat
         initChat();
 
-        //retrofit
-        service = initRetrofit();
-
-        // 토큰
-        Intent intent = getIntent();
-        token = intent.getStringExtra("TOKEN").trim();
-
         // 회원 정보 받아오기
-        Call<User> response = service.userRepos("nid", "me", "Bearer "+ token);
-        response.enqueue(userCallback);
+        NaverApiService.getUserInfo(this, userCallback);
     }
 
     //listener
@@ -103,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
             //데이터 찾으라고 쿼리를 날리기
             // 이미지 정보 검색해오기
-            String q = textbox.getText().toString();
-            Call<SearchImage> searchResponse = service.imageRepos("image", q, 100);
-            searchResponse.enqueue(searchImageCallback);
+            query = textbox.getText().toString();
+            NaverApiService.searchImage(query,100, 1, searchImageCallback);
 
             textbox.setText("");
         }
@@ -116,15 +90,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerAdapter.OnItemBtnClickListener showImageMoreListener = new RecyclerAdapter.OnItemBtnClickListener() {
         @Override
         public void onItemBtnClickListener() {
-
-            ArrayList<String> imageUrls = new ArrayList<>();
-
-            for(SearchImage.Item item: searchImages){
-                imageUrls.add(item.link);
-            }
-
             Intent intent = new Intent(MainActivity.this, ShowImageActivity.class);
-            intent.putExtra("IMAGES", imageUrls);
+            intent.putExtra("query", query);
             startActivity(intent);
         }
     };
@@ -184,17 +151,6 @@ public class MainActivity extends AppCompatActivity {
         Chat chat = new Chat();
         chat.setTextChat("검색어를 입력해주세요.");
         addChatItem(chat);
-    }
-
-    private NaverService initRetrofit(){
-        //레트로핏 설정
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://openapi.naver.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        //네이버로 연결
-        return retrofit.create(NaverService.class);
     }
 
     private int getListLastIndex() {

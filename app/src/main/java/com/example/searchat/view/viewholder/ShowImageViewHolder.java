@@ -1,6 +1,5 @@
-package com.example.searchat;
+package com.example.searchat.view.viewholder;
 
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -8,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.searchat.R;
 
 public class ShowImageViewHolder extends RecyclerView.ViewHolder {
 

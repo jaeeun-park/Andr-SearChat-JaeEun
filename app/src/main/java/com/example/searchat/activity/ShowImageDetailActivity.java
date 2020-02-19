@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.searchat.adapter.ImageRecyclerAdapter;
+import com.example.searchat.R;
 
 import java.util.ArrayList;
 
@@ -39,12 +42,11 @@ public class ShowImageDetailActivity extends AppCompatActivity {
         adapter = new ImageRecyclerAdapter();
         adapter.setGridMode(false);
         adapter.setData(data);
-        adapter.notifyDataSetChanged();
 
         viewPager = findViewById(R.id.showimg_view_pager);
         viewPager.setAdapter(adapter);
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position, false);
     }
 
 }

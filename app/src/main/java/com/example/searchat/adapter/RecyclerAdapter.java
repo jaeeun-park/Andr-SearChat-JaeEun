@@ -1,6 +1,5 @@
-package com.example.searchat;
+package com.example.searchat.adapter;
 
-import android.content.ClipData;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.searchat.view.item.ItemType;
+import com.example.searchat.R;
+import com.example.searchat.view.item.Chat;
+import com.example.searchat.view.viewholder.AbsViewHolder;
+import com.example.searchat.view.viewholder.ImageViewHolder;
+import com.example.searchat.view.viewholder.LeftViewHolder;
+import com.example.searchat.view.viewholder.RightViewHolder;
 
 import java.util.ArrayList;
 
@@ -59,7 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<AbsViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return data.get(position).getViewType();
+        return data.get(position).getItemType();
     }
 
     public void setData(ArrayList<Chat> data){

@@ -1,4 +1,4 @@
-package com.example.searchat;
+package com.example.searchat.api.data;
 
 import com.google.gson.annotations.SerializedName;
 
