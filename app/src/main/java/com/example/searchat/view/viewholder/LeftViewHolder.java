@@ -21,6 +21,6 @@ public class LeftViewHolder extends AbsViewHolder {
     @Override
     public void setData(Chat data) {
         this.content.setText(data.getContent());
-        Glide.with(this.profile).load(R.drawable.naver_icon).apply(new RequestOptions().circleCrop()).into(this.profile);
+        Glide.with(this.view).load(R.drawable.naver_icon).apply(new RequestOptions().circleCrop()).into(this.profile);
     }
 }

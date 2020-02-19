@@ -23,7 +23,7 @@ public class RightViewHolder extends AbsViewHolder {
     public void setData(Chat data) {
         this.name.setText(data.getName());
         this.content.setText(data.getContent());
-        Glide.with(this.view.getContext()).load(data.getProfile()).into(this.profile);
+        Glide.with(this.view).load(data.getProfile()).into(this.profile);
         Log.d("WhyChatDouble", "setData: RightViewHolder");
     }
 }

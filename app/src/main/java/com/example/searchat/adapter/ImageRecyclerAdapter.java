@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.searchat.view.item.ItemType;
+import com.example.searchat.ItemType;
 import com.example.searchat.R;
 import com.example.searchat.view.viewholder.ShowImageViewHolder;
 

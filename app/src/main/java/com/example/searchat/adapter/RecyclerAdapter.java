@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.searchat.view.item.ItemType;
+import com.example.searchat.ItemType;
 import com.example.searchat.R;
 import com.example.searchat.view.item.Chat;
 import com.example.searchat.view.viewholder.AbsViewHolder;

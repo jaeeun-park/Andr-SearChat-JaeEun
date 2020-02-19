@@ -3,6 +3,7 @@ package com.example.searchat.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class ShowImageActivity extends AppCompatActivity {
     //data
     ArrayList<String> data;
     ArrayList<SearchImage.Item> searchImage;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +94,12 @@ public class ShowImageActivity extends AppCompatActivity {
                         data.add(item.link);
                     }
                 }
-                runOnUiThread(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         initView();
                     }
-                });
+                }, 1000);
             }
         }
 

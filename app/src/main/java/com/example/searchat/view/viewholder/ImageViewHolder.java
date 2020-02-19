@@ -14,6 +14,7 @@ public class ImageViewHolder extends AbsViewHolder {
     public ImageViewHolder(@NonNull View itemView) {
         super(itemView);
         this.view = itemView;
+        this.profile = this.view.findViewById(R.id.item_image);
         this.image = this.view.findViewById(R.id.item_content_img);
         this.btn = this.view.findViewById(R.id.item_content_btn);
         Log.d("ImageViewHolder", "setData: "+this.image.getId());
@@ -21,7 +22,7 @@ public class ImageViewHolder extends AbsViewHolder {
 
     @Override
     public void setData(Chat data) {
-        Glide.with(this.view.getContext()).load(data.getImage()).into(this.image);
-        Glide.with(this.profile).load(R.drawable.naver_icon).apply(new RequestOptions().circleCrop()).into(this.profile);
+        Glide.with(this.view).load(data.getImage()).into(this.image);
+        Glide.with(this.view).load(R.drawable.naver_icon).apply(new RequestOptions().circleCrop()).into(this.profile);
     }
 }

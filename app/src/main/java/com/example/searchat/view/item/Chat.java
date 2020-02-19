@@ -1,6 +1,6 @@
 package com.example.searchat.view.item;
 
-import com.example.searchat.view.item.ItemType;
+import com.example.searchat.ItemType;
 
 public class Chat {
     private String name;

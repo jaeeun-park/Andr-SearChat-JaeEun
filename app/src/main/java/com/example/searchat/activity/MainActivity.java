@@ -2,22 +2,31 @@ package com.example.searchat.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.searchat.ItemType;
 import com.example.searchat.R;
 import com.example.searchat.adapter.RecyclerAdapter;
 import com.example.searchat.api.NaverApiService;
+import com.example.searchat.db.AppDatabase;
+import com.example.searchat.db.entity.Chatting;
 import com.example.searchat.view.item.Chat;
 import com.example.searchat.api.data.SearchImage;
 import com.example.searchat.api.data.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView searchBtn;
     private EditText textbox;
 
+    //db
+    private AppDatabase database;
+    private List<Chatting> savedDataList;
+
+    Handler handler = new Handler(Looper.getMainLooper());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +66,60 @@ public class MainActivity extends AppCompatActivity {
         //view
         initView();
 
+        database = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "searchat.db")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+
         //startChat
         initChat();
 
         // 회원 정보 받아오기
         NaverApiService.getUserInfo(this, userCallback);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("lifecycle", "onPause: ");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        Log.d("lifecycle", "onSaveInstanceState: ");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("lifecycle", "onStop: ");
+        super.onStop();
+    }
+
+    Handler insertHandler = new Handler(Looper.getMainLooper());
+    @Override
+    protected void onDestroy() {
+        Log.d("lifecycle", "onDestroy: ");
+        super.onDestroy();
+        insertHandler.post(new Runnable() {
+            Chatting[] save = new Chatting[dataList.size()];
+            @Override
+            public void run() {
+                for(int i = 0; i < dataList.size(); i++){
+                    Chat chat = dataList.get(i);
+                    Chatting data = new Chatting();
+                    data.name = chat.getName();
+                    data.itemType = chat.getItemType();
+                    data.content = chat.getContent();
+                    data.image = chat.getImage();
+                    data.profile = chat.getProfile();
+                    save[i] = data;
+                }
+                database.chattingDao().insertAll(save);
+            }
+        });
     }
 
     //listener
@@ -109,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    Handler searchHandler = new Handler();
     Callback<SearchImage> searchImageCallback = new Callback<SearchImage>() {
         @Override
         public void onResponse(Call<SearchImage> call, Response<SearchImage> response) {
@@ -116,9 +180,14 @@ public class MainActivity extends AppCompatActivity {
                 searchImages = response.body().item;
                 //이미지 검색 결과 보여주기
                 if(searchImages.size() > 0) {
-                    Chat chat = new Chat();
-                    chat.setImageChat(searchImages.get(0).link);
-                    addChatItem(chat);
+                    searchHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Chat chat = new Chat();
+                            chat.setImageChat(searchImages.get(0).link);
+                            addChatItem(chat);
+                        }
+                    }, 1000);
                 }
             }
         }
@@ -148,9 +217,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initChat(){
-        Chat chat = new Chat();
-        chat.setTextChat("검색어를 입력해주세요.");
-        addChatItem(chat);
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+                savedDataList = database.chattingDao().getAll();
+                if(savedDataList.size() > 0){
+                    for(Chatting chat: savedDataList){
+                        Chat savedChat = new Chat();
+                        switch (chat.itemType){
+                            case ItemType.VIEW_TYPE_CHAT_RIGHT:
+                                savedChat.setTextChat(chat.name, chat.content, chat.profile);
+                                break;
+                            case ItemType.VIEW_TYPE_CHAT_LEFT:
+                                savedChat.setTextChat(chat.content);
+                                break;
+                            case ItemType.VIEW_TYPE_CHAT_IMAGE:
+                                savedChat.setImageChat(chat.image);
+                                break;
+                            default:
+                                break;
+                        }
+                        addChatItem(savedChat);
+                    }
+                } else{
+                    Chat chat = new Chat();
+                    chat.setTextChat("검색어를 입력해주세요.");
+                    addChatItem(chat);
+                }
+//            }
+//        });
+
     }
 
     private int getListLastIndex() {

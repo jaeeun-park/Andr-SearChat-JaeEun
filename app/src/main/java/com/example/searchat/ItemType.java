@@ -1,4 +1,4 @@
-package com.example.searchat.view.item;
+package com.example.searchat;
 
 public class ItemType {
     public static final int VIEW_TYPE_CHAT_RIGHT = 0;
